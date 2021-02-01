@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace InfoTrack.SEO.Application.Services
 {
+    /// <summary>
+    /// This Service class will scrape the web URL and get all links available either in Google or Bing
+    /// Note: This will not consider ads URLs
+    /// </summary>
     public class SearchService : ISearchService
     {
         private WebScrapper _webScrapper;
@@ -28,6 +32,7 @@ namespace InfoTrack.SEO.Application.Services
             var scrapeResults = await _webScrapper.GetMatchingURLs(keywords, searchEngine, url);
             var result = new SearchOccurrence
             {
+                //If there is no result available, add 0 into the array
                 Occurrences = scrapeResults.Any() ? scrapeResults.Select(s => s.Index).ToArray() : new int[] { 0 },
                 SearchEngine = searchEngine,
                 URL = url.ToString()
